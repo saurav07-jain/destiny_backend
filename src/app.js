@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const connectDB = require('./config/db');
 
 const authRoutes = require('./routes/authRoutes');
 const carRoutes = require('./routes/carRoutes');
@@ -13,6 +14,16 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+
+// Ensure DB is connected before every request (required for serverless)
+app.use(async (req, res, next) => {
+  try {
+    await connectDB();
+    next();
+  } catch (err) {
+    res.status(500).json({ message: 'Database connection failed' });
+  }
+});
 
 // Routes
 app.use('/api/auth', authRoutes);
