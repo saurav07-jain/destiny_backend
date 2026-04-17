@@ -1,5 +1,8 @@
 const Booking = require('../models/Booking');
 const Car = require('../models/Car');
+const Activity = require('../models/Activity');
+
+const OWNER_ID = '1';
 
 const getBookings = async (req, res, next) => {
   try {
@@ -79,6 +82,21 @@ const deleteBooking = async (req, res, next) => {
   try {
     const booking = await Booking.findByIdAndDelete(req.params.id);
     if (!booking) return res.status(404).json({ message: 'Booking not found' });
+
+    // Restore car to Available
+    if (booking.carId) {
+      await Car.findByIdAndUpdate(booking.carId, { status: 'Available' });
+    }
+
+    // Log deletion activity
+    await Activity.create({
+      user: OWNER_ID,
+      type: 'booking_deleted',
+      description: `Booking deleted · ${booking.customerName} · ${booking.carName}`,
+      car: booking.carName,
+      metadata: { customerName: booking.customerName, carName: booking.carName },
+    });
+
     res.json({ message: 'Booking deleted' });
   } catch (err) {
     next(err);

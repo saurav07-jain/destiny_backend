@@ -12,7 +12,7 @@ const activitySchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ['rental', 'service', 'review', 'added', 'status_change'],
+      enum: ['rental', 'service', 'review', 'added', 'status_change', 'booking_deleted'],
       required: true,
     },
     description: {
