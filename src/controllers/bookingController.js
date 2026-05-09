@@ -117,7 +117,7 @@ const markOverdueCarsActive = async (req, res, next) => {
       booking.status = 'Journey Completed';
       await booking.save();
       if (booking.carId) {
-        await Car.findByIdAndUpdate(booking.carId, { status: 'Active' });
+        await Car.findByIdAndUpdate(booking.carId, { status: 'Available' });
       }
       updated.push(booking._id);
     }
