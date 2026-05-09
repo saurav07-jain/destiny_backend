@@ -103,4 +103,29 @@ const deleteBooking = async (req, res, next) => {
   }
 };
 
-module.exports = { getBookings, getBooking, createBooking, updateBooking, deleteBooking };
+const markOverdueCarsActive = async (req, res, next) => {
+  try {
+    const now = new Date();
+    // Find bookings whose end date has passed and are still 'Booked'
+    const overdueBookings = await Booking.find({
+      bookingTo: { $lt: now },
+      status: 'Booked',
+    });
+
+    const updated = [];
+    for (const booking of overdueBookings) {
+      booking.status = 'Journey Completed';
+      await booking.save();
+      if (booking.carId) {
+        await Car.findByIdAndUpdate(booking.carId, { status: 'Active' });
+      }
+      updated.push(booking._id);
+    }
+
+    res.json({ message: 'Overdue check complete', updated: updated.length });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getBookings, getBooking, createBooking, updateBooking, deleteBooking, markOverdueCarsActive };
