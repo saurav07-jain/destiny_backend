@@ -8,6 +8,7 @@ const expenseSchema = new mongoose.Schema(
     emiExpense: { type: Number, default: 0 },
     garageExpense: { type: Number, default: 0 },
     totalExpense: { type: Number, default: 0 },
+    remarks: { type: String, default: '' },
   },
   { timestamps: true }
 );
