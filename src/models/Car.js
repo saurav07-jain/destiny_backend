@@ -25,7 +25,7 @@ const carSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Available', 'Rented', 'Service', 'Active'],
+      enum: ['Available', 'Rented', 'Service'],
       default: 'Available',
     },
     fuelType: {

@@ -8,6 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const activityRoutes = require('./routes/activityRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const expenseRoutes = require('./routes/expenseRoutes');
+const assetRoutes = require('./routes/assetRoutes');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -32,6 +33,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/activities', activityRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/expenses', expenseRoutes);
+app.use('/api/assets', assetRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
